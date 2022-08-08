@@ -1,0 +1,43 @@
+#Persistent
+#NoEnv
+#SingleInstance Force
+SetWorkingDir, %A_ScriptDir%
+SetTitleMatchMode, 2
+#NoTrayIcon
+
+Chrome:																; Chrome web browser
+HotKeyImgONE	:= "C:\_PENsTools_\AutoHotkey_\AHK-Images_\ScreenBlack_w_DarkBlueBorder_v1.png"
+HotKeyGuiONE	:= "BorderlessBlackScreenONE"
+	If !WinExist(HotKeyGuiONE)
+		{
+			Gui, %HotKeyGuiONE%: new ; Create a new GUI
+			Gui, Add, Picture, x0 y0 w1920 h1080, %HotKeyImgONE%
+			Gui, -Caption -ToolWindow +LastFound +AlwaysOnTop
+			Gui, Margin, 0, 0
+			Gui, Show, Center, %HotKeyGuiONE%
+		} Else {
+			WinActivate ; %HotKeyGuiONE%
+			Sleep, 1000
+			WinClose ; active window determined by 'If !WinExist' above
+		}
+
+	If WinExist("ahk_exe chrome.exe")
+	{
+		WinActivate
+	} Else {
+		Run, "C:\Program Files\Google\Chrome\Application\chrome.exe", , Min, PID_Chrome		; 'Min' is not minimizing the Chrome window
+		WinWait, ahk_exe chrome.exe		; I don't understand why, but most of the time a program's "PID" does not work for me.
+;		WinMinimize		; This is not what I want. I just want to hide the taskBAR thingy.
+	}
+
+	Sleep 2500
+	If WinExist(HotKeyGuiONE)
+		{
+			WinClose ; active window determined by 'If WinExist' above
+		}
+
+;	Return
+ExitApp
+
+GetMeOuttaHere:
+^Numpad8::ExitApp
